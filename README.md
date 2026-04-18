@@ -2,34 +2,37 @@
 
 ## 🚀 Overview
 
-This project automates **spaced repetition for coding problems** by converting a Markdown log of solved problems into scheduled revision tasks in Google Calendar.
+This project automates **spaced repetition for coding problems** by converting a Markdown log of solved problems into scheduled revision tasks using Google Calendar.
 
-Instead of manually tracking revisions, this system ensures consistent reinforcement of problem-solving patterns using an automated pipeline.
+It eliminates manual tracking and ensures consistent revision through an automated pipeline.
 
 ---
 
 ## 🔄 How It Works
 
-```
-problems.md → Python script → Google Calendar API → Scheduled reminders
+```text
+problems.md → CLI (add_problem.py) → sync_calendar.py → Google Calendar
 ```
 
-1. You log solved problems in `problems.md`
-2. The script parses the file and extracts problems
-3. Applies spaced repetition intervals: **0, 1, 3, 7 days + weekly**
-4. Creates events in Google Calendar with email reminders
-5. Tracks processed entries to avoid duplicates
+1. Add a solved problem via CLI
+2. The problem is logged in `problems.md`
+3. The scheduler parses the file
+4. Revision events are created automatically in Google Calendar
+5. Duplicate scheduling is prevented using persistent state
 
 ---
 
 ## ✨ Features
 
-* 📄 **Markdown-based logging** (simple and human-readable)
-* 🔁 **Spaced repetition scheduling**
-* 📅 **Google Calendar integration**
-* 🔐 **OAuth 2.0 authentication**
-* ♻️ **Idempotent execution** (safe to rerun, no duplicate events)
-* 🧠 **Automated learning reinforcement system**
+* 📄 Markdown-based problem logging
+* ⚡ CLI tool for quick entry (`add_problem.py`)
+* 🔁 Spaced repetition scheduling
+* 📅 Google Calendar integration
+* 🔐 OAuth 2.0 authentication
+* ♻️ Idempotent execution (no duplicate events)
+* 🔗 Clickable problem links in calendar
+* 🏷️ Difficulty-based scheduling
+* 🧠 Topic tracking support
 
 ---
 
@@ -45,11 +48,12 @@ problems.md → Python script → Google Calendar API → Scheduled reminders
 
 ## 📁 Project Structure
 
-```
+```text
 neetcode-150_submissions/
 │
 ├── Data Structures & Algorithms/
 ├── problems.md
+├── add_problem.py
 ├── README.md
 │
 └── automation/
@@ -65,7 +69,7 @@ neetcode-150_submissions/
 
 ### 1. Clone the repository
 
-```
+```bash
 git clone <your-repo-url>
 cd neetcode-150_submissions
 ```
@@ -74,7 +78,7 @@ cd neetcode-150_submissions
 
 ### 2. Install dependencies
 
-```
+```bash
 pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 ```
 
@@ -87,42 +91,66 @@ pip install google-api-python-client google-auth-httplib2 google-auth-oauthlib
 * Create OAuth Client ID (Desktop App)
 * Download and rename file to:
 
-```
+```text
 credentials.json
 ```
 
 * Place it inside:
 
-```
+```text
 automation/
 ```
 
 ---
 
-### 4. Add problems
+## 🧪 Usage
 
-Edit `problems.md`:
+### 🔹 Add a new problem (interactive mode)
+
+```bash
+python add_problem.py
+```
+
+Follow prompts:
 
 ```
-## 18-04-2026
-- Two Sum
-- Binary Search
+Problem name:
+Link:
+Difficulty (optional):
+Topic (optional):
 ```
 
 ---
 
-### 5. Run the script
+### 🔹 CLI mode (optional)
 
+```bash
+python add_problem.py "Two Sum" https://leetcode.com/problems/two-sum/ easy array
 ```
-cd automation
-python sync_calendar.py
+
+---
+
+### 🔹 Automatic behavior
+
+* Problem is added to `problems.md`
+* Calendar events are scheduled automatically
+* Email reminders are set
+
+---
+
+## 📄 Example `problems.md`
+
+```md
+## 17-04-2026
+- Search a 2D Matrix | https://neetcode.io/problems/search-2d-matrix/question | medium | binary-search
+- Binary Search | https://neetcode.io/problems/binary-search/question?list=neetcode150 | easy | binary-search
 ```
 
 ---
 
 ## 📅 Example Output
 
-The script creates:
+Each problem generates:
 
 * Day 0 (same day)
 * Day +1
@@ -130,7 +158,22 @@ The script creates:
 * Day +7
 * Weekly recurring revision
 
-All with email reminders.
+Calendar events include:
+
+* Problem name
+* Clickable link
+* Difficulty
+* Topic
+
+---
+
+## 🧠 Scheduling Logic
+
+| Difficulty | Intervals         |
+| ---------- | ----------------- |
+| easy       | 0, 3, 7           |
+| medium     | 0, 1, 3, 7        |
+| hard       | 0, 1, 2, 3, 7, 14 |
 
 ---
 
@@ -147,22 +190,22 @@ All with email reminders.
 
 ## 🎯 Motivation
 
-Most people solve coding problems and forget them.
+Most developers solve problems and forget them.
 
 This project enforces:
 
 > Solve → Schedule → Revise → Retain
 
-It transforms problem-solving into a **long-term learning system**.
+It transforms coding practice into a **long-term learning system**.
 
 ---
 
 ## 🚀 Future Improvements
 
-* CLI-based problem logging (`add_problem.py`)
-* Difficulty-based scheduling (adaptive repetition)
+* Auto-extract problem name from URL
+* Adaptive scheduling based on recall success
 * Dashboard visualization (GitHub Pages)
-* Integration with LeetCode/NeetCode APIs
+* Integration with LeetCode APIs
 * WhatsApp/SMS reminders
 
 ---
@@ -176,9 +219,10 @@ It transforms problem-solving into a **long-term learning system**.
 
 ## 🤝 Contribution
 
-Feel free to fork and extend the system with smarter scheduling or integrations.
+Feel free to fork and extend the system.
 
+---
 
 ## ⭐ Acknowledgment
 
-Built as a personal tool to improve coding retention and learning efficiency.
+Built as a personal system to improve coding retention and learning efficiency.
